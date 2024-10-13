@@ -10,6 +10,7 @@ import { createFile } from './modules/createFile.js';
 import { renameFile } from './modules/renameFile.js';
 import { copyFile } from './modules/copyFile.js';
 import { moveFile } from './modules/moveFile.js';
+import { deleteFile } from './modules/deleteFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -72,6 +73,9 @@ const trimmedInput = input.trim();
         const copyingFile = fileName.split(' ')[0]
         const dest = fileName.split(' ')[1]
         moveFile(copyingFile, dest)
+    } else if (trimmedInput.startsWith('rm ')) {
+        const fileName = trimmedInput.slice(3).trim()
+        deleteFile(fileName)
     }
     else {
         console.log('Invalid input');
