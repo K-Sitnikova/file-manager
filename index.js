@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
 import readline from 'readline'
-import path from 'path'
-import { fileURLToPath } from "url";
 import { changeDirectory } from './modules/changeDirectory.js';
 import { moveUp } from './modules/moveUp.js';
 import { read } from './modules/read.js';
 import os from 'os'
-import { readFile } from './readFile.js';
+import { readFile } from './modules/readFile.js';
 import { createFile } from './modules/createFile.js';
 import { renameFile } from './modules/renameFile.js';
 import { copyFile } from './modules/copyFile.js';
+import { moveFile } from './modules/moveFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -68,6 +67,11 @@ const trimmedInput = input.trim();
         const copyingFile = fileName.split(' ')[0]
         const dest = fileName.split(' ')[1]
         copyFile(copyingFile, dest)
+    } else if (trimmedInput.startsWith('mv ')) {
+        const fileName = trimmedInput.slice(3).trim()
+        const copyingFile = fileName.split(' ')[0]
+        const dest = fileName.split(' ')[1]
+        moveFile(copyingFile, dest)
     }
     else {
         console.log('Invalid input');
