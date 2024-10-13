@@ -12,6 +12,7 @@ import { copyFile } from './modules/copyFile.js';
 import { moveFile } from './modules/moveFile.js';
 import { deleteFile } from './modules/deleteFile.js';
 import { getInfo } from './modules/system.js';
+import { calculateHash } from './modules/calculateHash.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -49,7 +50,6 @@ const trimmedInput = input.trim();
     } else if(trimmedInput.startsWith('cd '))  {
         const targetDir = trimmedInput.slice(3).trim()
         currentDir = await changeDirectory(targetDir)
-        printCurrentDir(currentDir)
     } else if(trimmedInput === 'ls') {
         await read(currentDir)
         printCurrentDir(currentDir)
@@ -80,6 +80,9 @@ const trimmedInput = input.trim();
     } else if (trimmedInput.startsWith('os ')){
         const preffix = trimmedInput.slice(3).trim()
         getInfo(preffix)
+    } else if (trimmedInput.startsWith('hash ')){
+        const fileName = trimmedInput.slice(5).trim()
+        await calculateHash(fileName)
     }
     else {
         console.log('Invalid input');
