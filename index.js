@@ -10,6 +10,7 @@ import os from 'os'
 import { readFile } from './readFile.js';
 import { createFile } from './modules/createFile.js';
 import { renameFile } from './modules/renameFile.js';
+import { copyFile } from './modules/copyFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -59,10 +60,15 @@ const trimmedInput = input.trim();
         await createFile(currentDir, fileName)
     } else if(trimmedInput.startsWith('rn ')) {
         const fileName = trimmedInput.slice(3).trim()
-        const oldName = fileName.split(' ')[0]
+        const renamed = fileName.split(' ')[0]
         const newName = fileName.split(' ')[1]
-        await renameFile(currentDir, oldName, newName)
-    } 
+        await renameFile(renamed, newName)
+    } else if (trimmedInput.startsWith('cp ')) {
+        const fileName = trimmedInput.slice(3).trim()
+        const copyingFile = fileName.split(' ')[0]
+        const dest = fileName.split(' ')[1]
+        copyFile(copyingFile, dest)
+    }
     else {
         console.log('Invalid input');
         printCurrentDir(currentDir);

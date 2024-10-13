@@ -1,19 +1,20 @@
-import fs, { existsSync } from 'fs'
+import fs from 'fs/promises'
 import path from 'path'
+import { existsSync } from 'fs'
 
 
-export const renameFile = async (dir, fileName, newFileName) => {
-    const fileForRename = path.join(dir, fileName)
-    const fileAfterRename = path.join(dir, newFileName)
-
-    if (existsSync(fileAfterRename) || !existsSync(fileForRename)) {
+export const renameFile = async (renamed, newFileName) => {
+    const directory = path.dirname(renamed)
+    const fileAfterRename = path.join(directory, newFileName)
+    
+    if (existsSync(fileAfterRename) || !existsSync(renamed)) {
         throw new Error('FS operation failed')
     }
 
-    fs.rename(fileForRename, fileAfterRename, (err) => {
-        if (err) {
-            console.log(err)
-            return
-        }
-    })
+    try {
+        await fs.rename(renamed, fileAfterRename)
+        console.log(`File created at directory ${fileAfterRename}`)
+    }catch(err) {
+        throw new Error('error on renaming file')
+    }
 }
