@@ -11,6 +11,7 @@ import { renameFile } from './modules/renameFile.js';
 import { copyFile } from './modules/copyFile.js';
 import { moveFile } from './modules/moveFile.js';
 import { deleteFile } from './modules/deleteFile.js';
+import { getInfo } from './modules/system.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -76,6 +77,9 @@ const trimmedInput = input.trim();
     } else if (trimmedInput.startsWith('rm ')) {
         const fileName = trimmedInput.slice(3).trim()
         deleteFile(fileName)
+    } else if (trimmedInput.startsWith('os ')){
+        const preffix = trimmedInput.slice(3).trim()
+        getInfo(preffix)
     }
     else {
         console.log('Invalid input');
