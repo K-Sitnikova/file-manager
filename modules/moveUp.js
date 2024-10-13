@@ -1,19 +1,14 @@
-import os from 'os'
 import path from 'path'
 
-const homeDir = os.homedir();
-let currentDir = homeDir;
-const rootDir = path.parse(currentDir).root
 
-
-export const moveUp = () => {
-    const parentDir = path.resolve(currentDir, '..')
-    console.log(os.getHomeDir())
-    if(parentDir.startsWith(rootDir) && parentDir !== rootDir) {
-        currentDir = parentDir
-    } else if(parentDir === rootDir) {
-        currentDir = rootDir
+export const moveUp = async (currentDir, rootDir) => {
+    const parentDir = path.resolve(currentDir, '..');
+    if (parentDir.startsWith(rootDir) && parentDir !== rootDir) {
+        return parentDir;
+    } else if (parentDir === rootDir) {
+        return rootDir;
     } else {
-        console.log("you can't navigate above root directory")
+        console.log("You can't navigate above root directory");
+        return currentDir;
     }
-}
+};

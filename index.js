@@ -7,12 +7,10 @@ import { changeDirectory } from './modules/changeDirectory.js';
 import { moveUp } from './modules/moveUp.js';
 import { read } from './modules/read.js';
 import os from 'os'
+import { readFile } from './readFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 const homeDir = os.homedir();
 let currentDir = homeDir;
 
@@ -23,10 +21,10 @@ args.forEach(arg => {
 });
 
 
-const printCurrentDir = () => console.log(`You are currently in ${currentDir}`);
+const printCurrentDir = (current) => console.log(`You are currently in ${current}`);
 
 console.log(`Welcome to the File Manager, ${username}!`);
-printCurrentDir()
+printCurrentDir(currentDir)
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -36,21 +34,27 @@ const rl = readline.createInterface({
 
 rl.prompt();
 
-rl.on('line', (input) => {
+rl.on('line', async (input) => {
 const trimmedInput = input.trim();
 
     if (trimmedInput === '.exit') {
         rl.close();
     } else if (trimmedInput === 'up') {
-        moveUp()
+        currentDir = await moveUp(currentDir, homeDir)
+        printCurrentDir(currentDir)
     } else if(trimmedInput.startsWith('cd '))  {
         const targetDir = trimmedInput.slice(3).trim()
-        changeDirectory(targetDir)
+        currentDir = await changeDirectory(targetDir)
+        printCurrentDir(currentDir)
     } else if(trimmedInput === 'ls') {
-        read(currentDir)
-    } else {
+        await read(currentDir)
+    } else if(trimmedInput.startsWith('cat ')) {
+        const fileName = trimmedInput.slice(3).trim()
+        readFile(currentDir, fileName)
+    } 
+    else {
         console.log('Invalid input');
-        printCurrentDir();
+        printCurrentDir(currentDir);
         rl.prompt();
     }
 }).on('close', () => {
