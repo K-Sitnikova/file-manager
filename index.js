@@ -8,6 +8,7 @@ import { moveUp } from './modules/moveUp.js';
 import { read } from './modules/read.js';
 import os from 'os'
 import { readFile } from './readFile.js';
+import { createFile } from './modules/createFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -48,9 +49,13 @@ const trimmedInput = input.trim();
         printCurrentDir(currentDir)
     } else if(trimmedInput === 'ls') {
         await read(currentDir)
+        printCurrentDir(currentDir)
     } else if(trimmedInput.startsWith('cat ')) {
         const fileName = trimmedInput.slice(3).trim()
-        readFile(currentDir, fileName)
+        await readFile(currentDir, fileName)
+    } else if(trimmedInput.startsWith('add ')) {
+        const fileName = trimmedInput.slice(3).trim()
+        await createFile(currentDir, fileName)
     } 
     else {
         console.log('Invalid input');

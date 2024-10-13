@@ -9,11 +9,11 @@ export const readFile = async (dir, fileName) => {
         throw new Error('file does not exist')
     }
 
-    fs.readFile(fileForRead, {encoding: 'utf-8'}, (error, data) => {
-        if (error) {
-            console.log(error)
-            return
-        }
-        console.log(data)
+    const stream = fs.createReadStream(filePath, {encoding: 'utf-8'})
+    stream.on('data', chunk => {
+        process.stdout.write(chunk)
+    })
+    stream.on('end', () => {
+        console.log('')
     })
 }
