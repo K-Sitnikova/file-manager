@@ -9,6 +9,7 @@ import { read } from './modules/read.js';
 import os from 'os'
 import { readFile } from './readFile.js';
 import { createFile } from './modules/createFile.js';
+import { renameFile } from './modules/renameFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -51,11 +52,16 @@ const trimmedInput = input.trim();
         await read(currentDir)
         printCurrentDir(currentDir)
     } else if(trimmedInput.startsWith('cat ')) {
-        const fileName = trimmedInput.slice(3).trim()
+        const fileName = trimmedInput.slice(4).trim()
         await readFile(currentDir, fileName)
     } else if(trimmedInput.startsWith('add ')) {
-        const fileName = trimmedInput.slice(3).trim()
+        const fileName = trimmedInput.slice(4).trim()
         await createFile(currentDir, fileName)
+    } else if(trimmedInput.startsWith('rn ')) {
+        const fileName = trimmedInput.slice(3).trim()
+        const oldName = fileName.split(' ')[0]
+        const newName = fileName.split(' ')[1]
+        await renameFile(currentDir, oldName, newName)
     } 
     else {
         console.log('Invalid input');
