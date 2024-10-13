@@ -13,6 +13,7 @@ import { moveFile } from './modules/moveFile.js';
 import { deleteFile } from './modules/deleteFile.js';
 import { getInfo } from './modules/system.js';
 import { calculateHash } from './modules/calculateHash.js';
+import { compressFile } from './modules/compressFile.js';
 
 const args = process.argv.slice(2);
 let username = 'User';
@@ -83,6 +84,11 @@ const trimmedInput = input.trim();
     } else if (trimmedInput.startsWith('hash ')){
         const fileName = trimmedInput.slice(5).trim()
         await calculateHash(fileName)
+    } else if (trimmedInput.startsWith('compress ')){
+        const fileName = trimmedInput.slice(9).trim()
+        const current = fileName.split(' ')[0]
+        const compressed = fileName.split(' ')[1]
+        await compressFile(current, compressed)
     }
     else {
         console.log('Invalid input');
